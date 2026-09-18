@@ -1,0 +1,1 @@
+# Plan MVP: Evaluador de Habilidades Blandas y Estilos de Liderazgo
