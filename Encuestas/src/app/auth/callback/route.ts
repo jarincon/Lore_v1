@@ -10,6 +10,10 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(`${origin}/test`);
+    // Visible en los logs de Vercel; útil para diagnosticar.
+    console.error("exchangeCodeForSession falló:", error.message);
+  } else {
+    console.error("auth/callback sin code. Parámetros:", [...searchParams.keys()].join(","));
   }
 
   return NextResponse.redirect(`${origin}/login?error=enlace`);

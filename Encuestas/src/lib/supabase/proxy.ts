@@ -14,6 +14,15 @@ function redirigir(request: NextRequest, ruta: string, supabaseResponse: NextRes
 }
 
 export async function updateSession(request: NextRequest) {
+  // Si Supabase envía el enlace a otra ruta (p. ej. la Site URL) con ?code=,
+  // se reenvía al callback en lugar de perder el código.
+  const { pathname: ruta, searchParams } = request.nextUrl;
+  if (searchParams.has("code") && ruta !== "/auth/callback") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    return NextResponse.redirect(url);
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
